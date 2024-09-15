@@ -1,0 +1,13 @@
+{
+  "name": "devmike-wishlist-app",
+  "version": "2024.09.15",
+  "description": "Learning Shopify Apps by building a wishlist app",
+  "main": "index.js",
+  "scripts": {
+    "pretty": "prettier --write ./",
+    "update": "ncu -u"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3"
+  }
+}

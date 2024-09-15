@@ -1,7 +1,3 @@
-# Devmike Wishlist App
-
-Learning Shopify Apps by building a wishlist app
-
 ## Base Feature Set
 
 - [ ] Allow customers to create one or multiple wishlists
