@@ -1,6 +1,7 @@
 import { LogSeverity, shopifyApi } from "@shopify/shopify-api";
 import "@shopify/shopify-api/adapters/node";
 import appUninstallHandler from "./webhooks/app_uninstalled.js";
+import ordersHandler from "./webhooks/orders.js";
 
 const isDev = process.env.NODE_ENV === "development";
 
@@ -13,7 +14,7 @@ let shopify = shopifyApi({
   hostScheme: "https",
   apiVersion: process.env.SHOPIFY_API_VERSION,
   isEmbeddedApp: true,
-  logger: { level: isDev ? LogSeverity.Info : LogSeverity.Error },
+  logger: { level: isDev ? LogSeverity.Error : LogSeverity.Error },
 });
 
 /*
@@ -47,6 +48,11 @@ shopify = {
         topics: ["app/uninstalled"],
         url: "/api/webhooks/app_uninstalled",
         callback: appUninstallHandler,
+      },
+      {
+        topics: ["orders/create", "orders/updated"],
+        url: "/api/webhooks/orders",
+        callback: ordersHandler,
       },
     ],
   },

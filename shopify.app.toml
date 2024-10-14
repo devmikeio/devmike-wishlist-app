@@ -1,0 +1,44 @@
+# Avoid writing to toml directly. Use your .env file instead
+
+name = "Devmike Wishlist App"
+handle = "devmike-wishlist-app"
+client_id = "3f86d1fadcfd4c646df3378f8c3aa815"
+application_url = "https://4d29-2600-1700-1ada-3070-6c7a-1ead-ae98-6c0a.ngrok-free.app"
+embedded = true
+extension_directories = [ "extension/extensions/*" ]
+
+[auth]
+redirect_urls = [
+  "https://4d29-2600-1700-1ada-3070-6c7a-1ead-ae98-6c0a.ngrok-free.app/api/"
+]
+
+[access_scopes]
+scopes = "read_products,write_customers,read_orders"
+use_legacy_install_flow = false
+
+[webhooks]
+api_version = "2024-07"
+
+  [[webhooks.subscriptions]]
+  topics = [ "app/uninstalled" ]
+  uri = "https://4d29-2600-1700-1ada-3070-6c7a-1ead-ae98-6c0a.ngrok-free.app/api/webhooks/app_uninstalled"
+
+  [[webhooks.subscriptions]]
+  topics = [ "orders/create", "orders/updated" ]
+  uri = "https://4d29-2600-1700-1ada-3070-6c7a-1ead-ae98-6c0a.ngrok-free.app/api/webhooks/orders"
+
+  [webhooks.privacy_compliance]
+  customer_data_request_url = "https://4d29-2600-1700-1ada-3070-6c7a-1ead-ae98-6c0a.ngrok-free.app/api/gdpr/customers_data_request"
+  customer_deletion_url = "https://4d29-2600-1700-1ada-3070-6c7a-1ead-ae98-6c0a.ngrok-free.app/api/gdpr/customers_redact"
+  shop_deletion_url = "https://4d29-2600-1700-1ada-3070-6c7a-1ead-ae98-6c0a.ngrok-free.app/api/gdpr/shop_redact"
+
+[app_proxy]
+url = "https://4d29-2600-1700-1ada-3070-6c7a-1ead-ae98-6c0a.ngrok-free.app/api/proxy_route"
+prefix = "apps"
+subpath = "wishlist"
+
+[pos]
+embedded = false
+
+[build]
+include_config_on_deploy = true

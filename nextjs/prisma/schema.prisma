@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model stores {
@@ -21,7 +22,63 @@ model session {
   id      String  @id
   content String? @db.Text
   shop    String?
-  
+
   @@index([id])
   @@index([shop])
+}
+
+model friend_code {
+  //when a customer sends an invite to another customer to share their wishlist, we create an entry
+  // and send emails.
+  //Once accepted, we add the customers to their respective `friend` entry.
+  id               String   @id
+  sending_customer String
+  rec_customer     String
+  code             String   @default(uuid(7))
+  status           status   @default(sent)
+  accepted         Boolean  @default(false)
+  //baseline
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+
+  @@unique([sending_customer, rec_customer])
+}
+
+enum status {
+  sent
+  accepted
+  rejected
+}
+
+model customer {
+  id        String      @id //customer gid
+  //pii
+  name      String?
+  email     String?
+  wishlists wishlists[]
+
+  @@index([id])
+}
+
+model wishlists {
+  id               String             @id @default(uuid())
+  name             String
+  isDefault        Boolean            @default(false)
+  customer         customer?          @relation(fields: [customerId], references: [id])
+  customerId       String?
+  wishlist_product wishlist_product[]
+
+  @@index([id])
+  @@index([customerId])
+}
+
+model wishlist_product {
+  id            String      @id @default(uuid())
+  product_id    String
+  variant_id    String
+  title         String
+  variant_title String      @default("Default Title")
+  wishlists     wishlists[]
+
+  @@unique([product_id, variant_id])
 }
