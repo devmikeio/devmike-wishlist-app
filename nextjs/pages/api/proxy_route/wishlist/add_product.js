@@ -50,13 +50,13 @@ const handler = async (req, res) => {
               connectOrCreate: {
                 where: {
                   product_id_variant_id: {
-                    product_id: reqbody.product_id,
-                    variant_id: reqbody.variant_id,
+                    product_id: `gid://shopify/Product/${reqbody.product_id}`,
+                    variant_id: `gid://shopify/ProductVariant/${reqbody.variant_id}`,
                   },
                 },
                 create: {
-                  product_id: reqbody.product_id,
-                  variant_id: reqbody.variant_id,
+                  product_id: `gid://shopify/Product/${reqbody.product_id}`,
+                  variant_id: `gid://shopify/ProductVariant/${reqbody.variant_id}`,
                   title: reqbody.title,
                   variant_title: reqbody.variant_title,
                 },
@@ -91,10 +91,10 @@ const handler = async (req, res) => {
       });
     }
 
-    return res.status(200).send({ content: "Proxy Be Working" });
+    return res.status(200).send({ content: "Created" });
   } catch (e) {
     console.error(e);
-    return res.status(403).send({ error: true });
+    return res.status(403).send({ error: true, message: e.message });
   }
 };
 

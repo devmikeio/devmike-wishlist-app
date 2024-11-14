@@ -1,21 +1,23 @@
 <script>
-    async function addToWishlist() {
-    const response = await(
-    await fetch("/apps/wishlist/wishlist/add_product", {
-    headers: {
+  async function addToWishlist() {
+    const response = await (
+      await fetch("/apps/wishlist/wishlist/add_product", {
+        headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
         method: "POST",
         body: JSON.stringify({
-            product_id: "{{ product.id }}",
-            variant_id: "{{ product.selected_or_first_available_variant.id }}",
-            title: "{{ product.title }}",
-            variant_title: "{{ product.selected_or_first_available_variant.title }}",
+          product_id: "{{ product.id }}",
+          variant_id: "{{ product.selected_or_first_available_variant.id }}",
+          title: "{{ product.title }}",
+          variant_title:
+            "{{ product.selected_or_first_available_variant.title }}",
+          wishlist_id: "",
         }),
-    })
+      })
     ).json();
-    }
-    </script>
-    
-    <button onClick="addToWishlist()">Add to wishlist</button>
+  }
+</script>
+
+<button onClick="addToWishlist()" class="shopify-payment-button__button shopify-payment-button__button--unbranded">Add to wishlist</button>
